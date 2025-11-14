@@ -161,28 +161,54 @@ def get_embedding_model():
     )
 
 # Function to update the FAISS vector store with new documents
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
 def update_vectorstore():
     """
     Updates the FAISS vector store with text from st.session_state.documents.
-    Splits documents into chunks for better retrieval.
+    Uses safe chunking to avoid GoogleGenerativeAI embedding failures.
     """
-    docs = []
-    for doc_text in st.session_state.documents:
-        # Simple chunking by double newline; can be improved with Langchain's text splitters
-        chunks = [LCDocument(page_content=chunk) for chunk in doc_text.split("\n\n") if chunk.strip()]
-        docs.extend(chunks)
 
+    # Safe, Gemini-compatible splitter
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=1500,        # Under embedding-001 token limit
+        chunk_overlap=200,
+        separators=["\n\n", "\n", ". ", " ", ""]
+    )
+
+    docs = []
+
+    for doc_text in st.session_state.documents:
+
+        # Clean malformed Unicode (common in PDFs)
+        cleaned = doc_text.encode("utf-8", "ignore").decode()
+
+        # Split into safe-size chunks
+        pieces = text_splitter.split_text(cleaned)
+
+        # Build LangChain Documents
+        for p in pieces:
+            if p.strip():
+                docs.append(LCDocument(page_content=p))
+
+    # No documents after cleaning → no vector store
     if not docs:
         st.session_state.vector_store = None
         return
 
     embedding_model = get_embedding_model()
-    # Create or update the FAISS vector store
-    if st.session_state.vector_store:
-        st.session_state.vector_store.add_documents(docs)
-    else:
-        st.session_state.vector_store = FAISS.from_documents(docs, embedding_model)
-    st.success("✅ Documents processed and ready for chat!")
+
+    # Build or update FAISS store
+    try:
+        if st.session_state.vector_store:
+            st.session_state.vector_store.add_documents(docs)
+        else:
+            st.session_state.vector_store = FAISS.from_documents(docs, embedding_model)
+
+        st.success("✅ Documents processed and ready for chat!")
+
+    except Exception as e:
+        st.error(f"❌ Vector store update failed: {e}")
 
 # Function to ask a question using RAG (Retrieval Augmented Generation)
 def ask_question_vector(query):
@@ -364,3 +390,4 @@ if prompt:
 
             # Update the last assistant response and audio in chat history
             st.session_state.chat_history[-1] = (prompt, answer, audio_b64)
+

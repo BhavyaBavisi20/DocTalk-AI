@@ -6,6 +6,7 @@ from pptx import Presentation
 import openpyxl
 from io import BytesIO
 from langchain_community.vectorstores import FAISS
+from langchain.text_splitter.recursive import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document as LCDocument
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from gtts import gTTS

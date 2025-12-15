@@ -6,12 +6,12 @@ The system enables fast, accurate, and context-aware conversations over large do
 ---
 
 ## Key Features
-- 📄 **Medical Document Q&A** using Retrieval-Augmented Generation (RAG)
-- 🧠 **Context-aware conversations** powered by LangChain
-- 🔍 **Semantic search** with FAISS vector database
-- ⚡ Faster document retrieval and improved response accuracy
-- 🔊 **Text-to-Speech support** using Google Text-to-Speech
-- 💬 Interactive chat interface built with Streamlit
+-  **Medical Document Q&A** using Retrieval-Augmented Generation (RAG)
+-  **Context-aware conversations** powered by LangChain
+-  **Semantic search** with FAISS vector database
+-  Faster document retrieval and improved response accuracy
+-  **Text-to-Speech support** using Google Text-to-Speech
+-  Interactive chat interface built with Streamlit
 
 ---
 
@@ -28,10 +28,10 @@ The system enables fast, accurate, and context-aware conversations over large do
 
 ## Project Structure
 DocTalk-AI/
-├── app.py
-├── config.toml
-├── .gitignore
-├── favicon.png
-├── logo.png
-└── .streamlit/
-  └── secrets.toml # not committed
+- ├── app.py
+- ├── config.toml
+- ├── .gitignore
+- ├── favicon.png
+- ├── logo.png
+- └── .streamlit/
+  - └── secrets.toml # not committed

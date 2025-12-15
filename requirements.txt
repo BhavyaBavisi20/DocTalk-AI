@@ -3,6 +3,7 @@ langchain
 langchain-community
 langchain-core
 faiss-cpu
+google-generativeai
 google-cloud-texttospeech
 openai
 tiktoken

@@ -6,12 +6,15 @@ from pptx import Presentation
 import openpyxl
 from io import BytesIO
 from langchain_community.vectorstores import FAISS
-from langchain.docstore.document import Document as LCDocument
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.schema import Document as LCDocument  # Corrected
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from gtts import gTTS
 import base64
 import asyncio
+
+# Modern text splitter import
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
 
 # --- Page Configuration and CSS ---
 st.set_page_config(

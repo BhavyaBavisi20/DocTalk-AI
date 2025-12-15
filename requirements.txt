@@ -1,0 +1,11 @@
+streamlit
+langchain
+langchain-community
+langchain-core
+faiss-cpu
+google-cloud-texttospeech
+openai
+tiktoken
+numpy
+pandas
+python-dotenv
